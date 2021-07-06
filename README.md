@@ -27,3 +27,9 @@ A Todo List application in Golang which exposes an API.
 }
 ```
 6. Go crazy!!!
+
+# To Dos
+1. Add updating of todos
+2. Add deletion of todos
+3. Make isDone a timestamp called done_at
+4. Add unit tests
