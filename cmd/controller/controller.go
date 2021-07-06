@@ -22,18 +22,18 @@ func NewController(s *http.Server, db *gorm.DB, toDoRepository storage.ToDoRepos
 		toDoRepository: toDoRepository,
 	}
 
-	http.HandleFunc("/todo", c.handleToDo)
-	http.HandleFunc("/todo/", c.getToDo)
+	http.HandleFunc("/todos", c.handleToDos)
+	http.HandleFunc("/todos/", c.getToDo)
 
 	return c
 }
 
-func (c *Controller) handleToDo(w http.ResponseWriter, r *http.Request) {
+func (c *Controller) handleToDos(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
 		c.createToDo(w, r)
 	case http.MethodGet:
-		// c.getToDos(w, r)
+		c.getToDos(w, r)
 	default:
 		http.Error(w, "method not supported", http.StatusMethodNotAllowed)
 	}
@@ -73,7 +73,13 @@ func (c Controller) createToDo(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c Controller) getToDo(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Path[len("/todo/"):]
+	if r.Method != http.MethodGet {
+		http.Error(w, "wrong method", http.StatusMethodNotAllowed)
+
+		return
+	}
+
+	id := r.URL.Path[len("/todos/"):]
 	toDoID, err := uuid.Parse(id)
 	if err != nil || toDoID == uuid.Nil {
 		http.Error(w, fmt.Sprintf("invalid uuid: %s", err.Error()), http.StatusBadRequest)
@@ -91,4 +97,17 @@ func (c Controller) getToDo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	json.NewEncoder(w).Encode(toDo)
+}
+
+func (c Controller) getToDos(w http.ResponseWriter, r *http.Request) {
+	toDos, err := c.toDoRepository.GetToDos(c.db)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("error getting todo: %s", err.Error()), http.StatusNotFound)
+
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(toDos)
 }
