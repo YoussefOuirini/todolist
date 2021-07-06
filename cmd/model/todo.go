@@ -8,10 +8,10 @@ import (
 )
 
 type ToDo struct {
-	ID          uuid.UUID
-	Title       string
-	Description string
-	DueDate     time.Time
-	Labels      pq.StringArray `gorm:"type:text[]"`
-	IsDone      bool
+	ID          uuid.UUID      `json:"id"`
+	Title       string         `json:"title"`
+	Description string         `json:"description"`
+	DueDate     time.Time      `json:"dueDate"`
+	Labels      pq.StringArray `gorm:"type:text[]" json:"labels"`
+	IsDone      bool           `json:"isDone"`
 }
