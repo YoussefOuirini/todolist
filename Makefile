@@ -9,3 +9,6 @@ down: ## stop docker images
 
 destroy: ## stop and remove docker images
 	docker-compose down -v
+
+restart:
+	make destroy && make serve
