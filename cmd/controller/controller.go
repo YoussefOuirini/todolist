@@ -80,4 +80,15 @@ func (c Controller) getToDo(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
+	toDo, err := c.toDoRepository.GetToDo(c.db, toDoID)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("error getting todo: %s", err.Error()), http.StatusNotFound)
+
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(toDo)
 }
