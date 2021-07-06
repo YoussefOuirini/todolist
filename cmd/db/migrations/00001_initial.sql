@@ -1,7 +1,7 @@
 -- +goose Up
 CREATE EXTENSION IF NOT EXISTS pgcrypto SCHEMA public;
 
-CREATE TABLE todos (
+CREATE TABLE to_dos (
     id uuid DEFAULT gen_random_uuid() NOT NULL CONSTRAINT todos_pkey PRIMARY KEY,
     title                 varchar(255)                      NOT NULL,
     description           varchar(255)                      NOT NULL,
