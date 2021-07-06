@@ -18,7 +18,7 @@ services:
         working_dir: /src/cmd/api
         command: go run main.go
         environment: 
-            DATABASE_URL: postgres://postgres:example@postgres:5432/todolist?sslmode=disable
+            DATABASE_URL: postgres://postgres:example@postgres:5432/todo?sslmode=disable
         ports:
             - "8080:8080"
         volumes:
