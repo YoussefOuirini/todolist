@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/youssefouirini/todolist/cmd/controller"
 )
 
 const (
@@ -58,6 +60,8 @@ func (s *APIServer) Shutdown() {
 }
 
 func (s *APIServer) mount() {
+	controller.NewController(s.server)
+
 	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "yoyoyoyoyo!")
 	})
