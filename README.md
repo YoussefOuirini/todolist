@@ -1,2 +1,2 @@
 # todolist
-To Do List Golang API
+A Todo List application in Golang which exposes an API.
