@@ -1,11 +1,15 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/lib/pq"
+)
 
 type ToDo struct {
 	Title       string
 	Description string
 	DueDate     time.Time
-	Labels      []string
+	Labels      pq.StringArray `gorm:"type:text[]"`
 	IsDone      bool
 }
