@@ -2,7 +2,8 @@
 A Todo List application in Golang which exposes an API.
 
 # How to use
-1. Run `make serve`
+1. Run `make serve` locally
+    - Whats make you ask? Click [here](https://letmegooglethat.com/?q=GNU+make)!
 2. Do a POST call to `http://localhost:8080/todos` using your favorite API Client using the following body
 
 ```
