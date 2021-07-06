@@ -1,7 +1,7 @@
-# todolist
+# To Do List
 A Todo List application in Golang which exposes an API.
 
-# how to use
+# How to use
 1. Run `make serve`
 2. Do a POST call to `http://localhost:8080/todos` using your favorite API Client using the following body
 
