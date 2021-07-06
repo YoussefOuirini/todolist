@@ -47,6 +47,8 @@ func (c Controller) createToDo(w http.ResponseWriter, r *http.Request) {
 	err = request.validate()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+
+		return
 	}
 
 	todo := model.ToDo{
