@@ -5,10 +5,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/youssefouirini/todolist/cmd/controller"
+	"github.com/youssefouirini/todolist/cmd/storage"
 )
 
 const (
@@ -19,8 +23,13 @@ const (
 func main() {
 	log.Printf("Starting server at port: %v", port)
 
-	api := NewAPIServer(port)
-	err := api.ListenAndServe()
+	db, err := gorm.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		panic(err)
+	}
+
+	api := NewAPIServer(port, db, storage.NewToDoRepository())
+	err = api.ListenAndServe()
 	if err != nil {
 		log.Fatalf("http server error: %s", err)
 	}
@@ -28,13 +37,17 @@ func main() {
 
 type APIServer struct {
 	server *http.Server
+	repo   storage.ToDoRepository
+	db     *gorm.DB
 }
 
-func NewAPIServer(port int) *APIServer {
+func NewAPIServer(port int, db *gorm.DB, repo storage.ToDoRepository) *APIServer {
 	s := &APIServer{
 		server: &http.Server{
 			Addr: ":" + strconv.Itoa(port),
 		},
+		db:   db,
+		repo: repo,
 	}
 
 	s.mount()
@@ -60,7 +73,7 @@ func (s *APIServer) Shutdown() {
 }
 
 func (s *APIServer) mount() {
-	controller.NewController(s.server)
+	controller.NewController(s.server, s.db, s.repo)
 
 	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "yoyoyoyoyo!")
