@@ -64,6 +64,10 @@ func (c Controller) createToDo(w http.ResponseWriter, r *http.Request) {
 		IsDone:      false,
 	}
 
+	if request.ID != "" {
+		todo.ID = uuid.MustParse(request.ID)
+	}
+
 	err = c.toDoRepository.CreateToDo(c.db, &todo)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
