@@ -33,3 +33,5 @@ A Todo List application in Golang which exposes an API.
 2. Add deletion of todos
 3. Make isDone a timestamp called done_at
 4. Add unit tests
+5. Add separate lists of todos
+6. Add separate users
