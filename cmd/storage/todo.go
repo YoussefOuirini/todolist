@@ -16,5 +16,5 @@ func NewToDoRepository() ToDoRepository {
 }
 
 func (repo *toDoRepository) CreateToDo(db *gorm.DB, toDo *model.ToDo) error {
-	return nil
+	return db.Create(toDo).Error
 }
