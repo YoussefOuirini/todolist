@@ -8,6 +8,7 @@ import (
 
 const (
 	descriptionMaxLength = 200
+	labelMaxLength       = 10
 )
 
 type createRequest struct {
@@ -31,7 +32,13 @@ func (r createRequest) validate() error {
 	}
 
 	if len(r.Description) > descriptionMaxLength {
-		return errors.New(fmt.Sprintf("description is %v, which is longer than max of %v", len(r.Description), descriptionMaxLength))
+		return errors.New(fmt.Sprintf("description length is %v, which is longer than max of %v", len(r.Description), descriptionMaxLength))
+	}
+
+	for _, label := range r.Labels {
+		if len(label) > labelMaxLength {
+			return errors.New(fmt.Sprintf("label length is %v, which is longer than max of %v", len(label), labelMaxLength))
+		}
 	}
 
 	return nil
