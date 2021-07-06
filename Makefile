@@ -11,7 +11,7 @@ migrate-down: postgres
 	sleep 5
 	(go run tools/migrate/main.go down)
 
-serve: ## start images
+serve: migrate ## start images
 	docker-compose up -d --remove-orphans
 
 stop: ## stop docker images
