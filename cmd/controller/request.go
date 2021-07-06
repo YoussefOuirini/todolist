@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 const (
@@ -12,6 +14,7 @@ const (
 )
 
 type createRequest struct {
+	ID          string    `json:"id"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	DueDate     time.Time `json:"dueDate"` //RFC 3339 format: 2021-07-12T07:20:50.52Z
@@ -38,6 +41,12 @@ func (r createRequest) validate() error {
 	for _, label := range r.Labels {
 		if len(label) > labelMaxLength {
 			return errors.New(fmt.Sprintf("label length is %v, which is longer than max of %v", len(label), labelMaxLength))
+		}
+	}
+
+	if r.ID != "" {
+		if _, err := uuid.Parse(r.ID); err != nil {
+			return err
 		}
 	}
 
